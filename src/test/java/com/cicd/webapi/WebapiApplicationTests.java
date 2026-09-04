@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.mockStatic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -65,5 +66,13 @@ class WebapiApplicationTests {
 			.andExpect(content().string("Current Server Date: " + java.time.LocalDate.now()));
 			//.andExpect(content().string("Current Server Date Time : " + java.time.LocalDateTime.now()));
 	}
+
+	@Test
+    void testGetInstanceEndpoint() throws Exception {
+        MockMvc.perform(get("/api/instance"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.instance").exists())
+                .andExpect(jsonPath("$.port").exists());
+    }
 
 }
